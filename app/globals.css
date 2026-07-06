@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================================
+   Theme tokens — global so every route (home, templates, legal, etc.)
+   themes together. Route stylesheets layer design on top of these.
+   ===================================================================== */
+:root {
+  --bg:        #0E0E0E;
+  --bg-1:      #141414;
+  --bg-2:      #1A1A1A;
+  --bg-3:      #232323;
+  --border:    #242424;
+  --border-2:  #333;
+  --fg:        #ECE7DD;
+  --fg-dim:    #BFB9AD;
+  --muted:     #7E7B74;
+  --faint:     #4A4844;
+  --accent:    oklch(78% 0.135 70);
+  --accent-2:  oklch(78% 0.135 250);
+
+  /* semantic / chrome tokens — overridden per theme */
+  --nav-scrolled:  rgba(14,14,14,0.85);
+  --nav-solid:     rgba(14,14,14,0.92);
+  --nav-panel:     rgba(14,14,14,0.96);
+  --surface-subtle: rgba(255,255,255,0.035);
+  --grid-line:     rgba(255,255,255,0.025);
+  --hairline:      rgba(255,255,255,0.08);
+  --btn-hover-bg:  #ffffff;
+  --shadow-strong: rgba(0,0,0,0.7);
+  --band:          #121110;
+  --band-2:        #0F0E0D;
+
+  --sans: var(--font-geist-sans), 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --mono: var(--font-geist-mono), 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --serif: var(--font-serif), 'Instrument Serif', 'Georgia', serif;
+
+  --maxw: 1280px;
+  --pad: clamp(20px, 4vw, 56px);
+  --radius: 6px;
+  --radius-lg: 14px;
+
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------------
+   Light theme — warm paper, not stark white, to keep the editorial feel
+   --------------------------------------------------------------------- */
+[data-theme="light"] {
+  --bg:        #F0EBE1;
+  --bg-1:      #F8F5EF;
+  --bg-2:      #FFFFFF;
+  --bg-3:      #E7E1D4;
+  --border:    #E0DACD;
+  --border-2:  #CFC7B7;
+  --fg:        #191510;
+  --fg-dim:    #494339;
+  --muted:     #736C60;
+  --faint:     #B7AF9F;
+  --accent:    oklch(56% 0.14 62);
+  --accent-2:  oklch(52% 0.15 255);
+
+  --nav-scrolled:  rgba(240,235,225,0.82);
+  --nav-solid:     rgba(240,235,225,0.92);
+  --nav-panel:     rgba(244,240,232,0.97);
+  --surface-subtle: rgba(25,21,16,0.04);
+  --grid-line:     rgba(25,21,16,0.045);
+  --hairline:      rgba(25,21,16,0.09);
+  --btn-hover-bg:  #000000;
+  --shadow-strong: rgba(70,58,36,0.22);
+  --band:          #E9E3D7;
+  --band-2:        #EEE9DE;
+
+  color-scheme: light;
+}
+
+html { background: var(--bg); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background .5s ease, color .5s ease;
+}

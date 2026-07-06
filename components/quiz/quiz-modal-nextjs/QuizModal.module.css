@@ -1,0 +1,272 @@
+/* QuizModal.module.css — scoped styles for the Next.js QuizModal component.
+   Colors are baked in so it renders correctly regardless of your site's theme.
+   Fonts fall back gracefully if you don't have Geist installed. */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(8, 8, 8, 0.62);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  animation: fadeIn 0.4s ease both;
+}
+.backdrop.out {
+  animation: fadeOut 0.32s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.dialog {
+  position: relative;
+  width: min(560px, 100%);
+  background: linear-gradient(180deg, #141414, #0e0e0e);
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 38px 38px 30px;
+  box-shadow: 0 40px 120px -20px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  animation: popIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.backdrop.out .dialog {
+  animation: popOut 0.3s ease both;
+}
+@keyframes popIn {
+  from { transform: translateY(16px) scale(0.985); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+@keyframes popOut {
+  from { transform: none; opacity: 1; }
+  to   { transform: translateY(8px) scale(0.99); opacity: 0; }
+}
+
+.dialog::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 80% at 88% 8%, oklch(78% 0.135 70 / 0.16), transparent 60%),
+    radial-gradient(55% 80% at 6% 100%, oklch(78% 0.135 250 / 0.12), transparent 60%);
+}
+.dialog > * {
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #333;
+  background: transparent;
+  color: #7e7b74;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.close:hover {
+  color: #ece7dd;
+  border-color: #ece7dd;
+  background: #1a1a1a;
+}
+.close svg {
+  width: 14px;
+  height: 14px;
+}
+
+.eyebrow {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7e7b74;
+}
+.title {
+  margin: 14px 0 10px;
+  font-size: clamp(26px, 4vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  color: #ece7dd;
+}
+.ital {
+  font-family: 'Times New Roman', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #bfb9ad;
+}
+.sub {
+  margin: 0 0 26px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #bfb9ad;
+  max-width: 44ch;
+}
+
+.paths {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.path {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 18px 18px 20px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #0e0e0e;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s;
+}
+.path::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: oklch(78% 0.135 70);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.25s ease;
+}
+.path.alt::before {
+  background: oklch(78% 0.135 250);
+}
+.path:hover {
+  background: #141414;
+  transform: translateY(-2px);
+}
+.path:hover::before {
+  transform: scaleY(1);
+}
+
+.pathTag {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(78% 0.135 70);
+  margin-bottom: 7px;
+}
+.path.alt .pathTag {
+  color: oklch(78% 0.135 250);
+}
+.pathName {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ece7dd;
+  margin-bottom: 4px;
+}
+.pathDesc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #7e7b74;
+}
+.pathGo {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 99px;
+  border: 1px solid #333;
+  color: #ece7dd;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.25s;
+}
+.path:hover .pathGo {
+  background: #ece7dd;
+  color: #0e0e0e;
+  border-color: #ece7dd;
+  transform: translateX(3px);
+}
+.pathGo svg {
+  width: 15px;
+  height: 15px;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #242424;
+  flex-wrap: wrap;
+}
+.footNote {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7e7b74;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.footNote::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6ecb7a;
+}
+.dismiss {
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 13px;
+  color: #7e7b74;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #4a4844;
+  transition: color 0.15s;
+}
+.dismiss:hover {
+  color: #bfb9ad;
+}
+
+@media (max-width: 540px) {
+  .dialog {
+    padding: 30px 22px 24px;
+  }
+  .path {
+    grid-template-columns: 1fr;
+  }
+  .pathGo {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .dialog {
+    animation: fadeIn 0.2s ease both;
+  }
+  .backdrop.out,
+  .backdrop.out .dialog {
+    animation: fadeOut 0.2s ease both;
+  }
+}
