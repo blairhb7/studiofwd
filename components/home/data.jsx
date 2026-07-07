@@ -86,7 +86,7 @@ export const TEMPLATES = [
     image: '/img/templates/photolens.jpg',
     preview: 'https://physical-birthday-549306.framer.app/',  // TODO: real preview URL
     remix:   null,
-    buy:     'https://contra.com/payment-link/V7ooUUIC-blair-chappell',
+    buy:     'https://contra.com/payment-link/HOivSsKR-photo-lens-dark-editorial-photography-template',
     description: 'Dark photography portfolio with full-bleed galleries, a project CMS, and typography that stays out of the frame.',
   },
   {
