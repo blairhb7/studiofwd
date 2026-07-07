@@ -243,7 +243,6 @@ export function Footer() {
             <ul>
               <li><a href={LINKS.marketplace} target="_blank" rel="noopener noreferrer">Framer marketplace ↗</a></li>
               <li><a href={LINKS.twitter} target="_blank" rel="noopener noreferrer">X / Twitter ↗</a></li>
-              <li><a href={LINKS.agency} target="_blank" rel="noopener noreferrer">astroshift.agency ↗</a></li>
             </ul>
           </div>
           <div className="foot-col">

@@ -12,7 +12,7 @@ export const LINKS = {
   marketplace: 'https://www.framer.com/@astroshift/',   // ← your creator profile
   twitter:     'https://x.com/astroshift',               // ← your X handle
   agency:      'https://astroshift.agency',
-  email:       'hello@astroshift.agency',
+  email:       'hello@studiofwd.agency',
 };
 
 // ---------------------------------------------------------------------
@@ -31,7 +31,7 @@ export const SERVICES = [
     num: '01 / Bespoke',
     title: 'Custom design\n& build',
     body: "End-to-end engagements: discovery, art direction, design, and a fully handed-off Framer or coded site. For founders who need their site to do something specific — and do it better than the rest.",
-    metaLeft: 'From $6.4k',
+    metaLeft: 'From $1.4k',
     metaRight: '3–6 weeks',
     glyph: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
