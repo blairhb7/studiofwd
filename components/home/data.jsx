@@ -14,7 +14,14 @@ export const LINKS = {
   agency:      'https://astroshift.agency',
   email:       'hello@studiofwd.agency',
 };
-
+// ---------------------------------------------------------------------
+// CONTACT FORM DELIVERY (Web3Forms)
+// Delivers to whatever address you registered the key with.
+//   1. Go to https://web3forms.com, enter your NEW email, get a key.
+//   2. Paste it below (or set NEXT_PUBLIC_WEB3FORMS_KEY in .env.local).
+// ---------------------------------------------------------------------
+export const WEB3FORMS_KEY =
+  process.env.NEXT_PUBLIC_WEB3FORMS_KEY || 'e2221330-15c7-4374-9cb5-29c9d4ddfc2d';
 // ---------------------------------------------------------------------
 // Per-template links — three kinds, each optional:
 //   preview  → the live demo site (the "Preview" button)

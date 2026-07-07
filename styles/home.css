@@ -1637,3 +1637,6 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .theme-toggle-thumb, .theme-toggle .ic, body { transition: none; }
 }
+
+
+.btn:disabled { opacity: .6; cursor: progress; pointer-events: none; }

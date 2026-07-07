@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from 'react';
 import { Reveal, useMagnet, useClock, Eyebrow } from './hooks';
-import { TESTIMONIALS, FAQS, CONTACT_CHIPS, LINKS } from './data';
+import { TESTIMONIALS, FAQS, CONTACT_CHIPS, LINKS, WEB3FORMS_KEY } from './data';
 import { Nav, Hero, Marquee, Services, Templates, QuizCTA } from './sections-a';
 
 function getBookingMonth() {
@@ -108,18 +108,67 @@ export function Contact() {
     return next;
   });
 
-  const onSubmit = (e) => {
+  const [submitting, setSubmitting] = useState(false);
+  const keyMissing = !WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR-WEB3FORMS-ACCESS-KEY-HERE';
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim()) {
       setNote({ text: '⚠  Name and email are required', color: 'var(--accent)' });
       return;
     }
-    setNote({
-      text: `✓  Sent — talk soon, ${form.name.trim().split(' ')[0]}`,
-      color: '#6ECB7A',
-    });
-    setForm({ name: '', email: '', company: '', budget: '', msg: '' });
-    setPicks(new Set());
+
+    if (keyMissing) {
+      setNote({
+        text: '⚠  Form not connected yet — add your Web3Forms key',
+        color: 'var(--accent)',
+      });
+      return;
+    }
+
+    setSubmitting(true);
+    setNote({ text: 'Sending…', color: 'var(--muted)' });
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `New enquiry from ${form.name.trim()} — Studio/fwd`,
+          from_name: 'Studio/fwd website',
+          name: form.name,
+          email: form.email,
+          company: form.company || '—',
+          budget: form.budget || '—',
+          interested_in: [...picks].join(', ') || '—',
+          message: form.msg || '—',
+          botcheck: '',
+        }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setNote({
+          text: `✓  Sent — talk soon, ${form.name.trim().split(' ')[0]}`,
+          color: '#6ECB7A',
+        });
+        setForm({ name: '', email: '', company: '', budget: '', msg: '' });
+        setPicks(new Set());
+      } else {
+        setNote({
+          text: '⚠  Something went wrong — email me directly instead',
+          color: 'var(--accent)',
+        });
+      }
+    } catch (err) {
+      setNote({
+        text: '⚠  Network error — please email me directly',
+        color: 'var(--accent)',
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -202,10 +251,22 @@ export function Contact() {
             </div>
 
             <div className="cf-submit">
+              {/* Spam honeypot — real people never fill this; bots do */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              style={{ display: 'none' }}
+              aria-hidden="true"
+            />
+
+            <div className="cf-submit">
               <span className="cf-submit-note" style={{ color: note.color }}>{note.text}</span>
-              <button ref={magnet} type="submit" className="btn btn-primary">
-                Send it over <span className="btn-arrow">→</span>
+              <button ref={magnet} type="submit" className="btn btn-primary" disabled={submitting}>
+                {submitting ? 'Sending…' : 'Send it over'} <span className="btn-arrow">→</span>
               </button>
+            </div>
             </div>
           </form>
         </Reveal>
