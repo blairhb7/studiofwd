@@ -8,7 +8,8 @@ import styles from './QuizModal.module.css';
 export default function QuizModal({
   customUrl = '/quiz',
   templateUrl = '/template-finder',
-  firstDelay = 3000,
+  scrollThreshold = 0.5,
+  fallbackDelay = 18000,
   repeatDelay = 360000,
   maxShows = 2,
 }) {
@@ -19,6 +20,7 @@ export default function QuizModal({
   const shows = useRef(0);
   const dismissed = useRef(false);
   const timers = useRef([]);
+  const ticking = useRef(false);
 
   const close = useCallback(() => {
     setClosing(true);
@@ -48,7 +50,10 @@ export default function QuizModal({
     shows.current += 1;
     setClosing(false);
     setOpen(true);
-  }, [maxShows]);
+
+    const repeatTimer = setTimeout(reveal, repeatDelay);
+    timers.current.push(repeatTimer);
+  }, [maxShows, repeatDelay]);
 
   useEffect(() => {
     if (sessionStorage.getItem('qm-dismissed') === '1') {
@@ -56,20 +61,46 @@ export default function QuizModal({
       return;
     }
 
-    const firstTimer = setTimeout(() => {
+    // First appearance fires on whichever comes first: the visitor scrolling
+    // past `scrollThreshold` of the page (a real engagement signal), or the
+    // fallback timer for people who read without scrolling much. `fired`
+    // guards against both triggers firing (e.g. scroll passes threshold
+    // right before the fallback timer was already about to run).
+    let fired = false;
+
+    const fire = () => {
+      if (fired) return;
+      fired = true;
+      clearTimeout(fallbackTimer);
+      window.removeEventListener('scroll', onScroll);
       reveal();
+    };
 
-      const secondTimer = setTimeout(reveal, repeatDelay);
-      timers.current.push(secondTimer);
-    }, firstDelay);
+    const fallbackTimer = setTimeout(fire, fallbackDelay);
+    timers.current.push(fallbackTimer);
 
-    timers.current.push(firstTimer);
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+
+      requestAnimationFrame(() => {
+        ticking.current = false;
+
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? window.scrollY / scrollable : 1;
+
+        if (progress >= scrollThreshold) fire();
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
+      window.removeEventListener('scroll', onScroll);
       timers.current.forEach(clearTimeout);
       timers.current = [];
     };
-  }, [reveal, firstDelay, repeatDelay]);
+  }, [reveal, scrollThreshold, fallbackDelay]);
 
   useEffect(() => {
     setOpen(false);
