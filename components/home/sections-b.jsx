@@ -1,49 +1,54 @@
 'use client';
 
 // =====================================================================
-// Home — sections (Testimonials, FAQ, Contact, Footer) + page composer
+// Home — sections (Process, FAQ, Contact, Footer) + page composer
 // =====================================================================
 
 import { useEffect, useState } from 'react';
 import { Reveal, useMagnet, useClock, Eyebrow } from './hooks';
-import { TESTIMONIALS, FAQS, CONTACT_CHIPS, LINKS, WEB3FORMS_KEY } from './data';
+import { PROCESS, FAQS, CONTACT_CHIPS, LINKS, WEB3FORMS_KEY } from './data';
 import { Nav, Hero, Marquee, Services, Templates, QuizCTA } from './sections-a';
 
 function getBookingMonth() {
   return new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());
 }
 
-export function Testimonials() {
+export function Process() {
   return (
-    <section id="testimonials">
+    <section id="process">
       <div className="wrap">
         <Reveal className="section-head">
           <div>
-            <Eyebrow>§ 04 — Receipts</Eyebrow>
-            <h2>What clients<br/><span className="ital">actually</span> say.</h2>
+            <Eyebrow>§ 04 — How it works</Eyebrow>
+            <h2>No case studies<br/>yet — <span className="ital">here&rsquo;s the process.</span></h2>
           </div>
           <p>
-            A small selection. Most projects end with a longer note that I keep
-            taped above my desk — these are the public-facing ones.
+            I&rsquo;m taking on founding clients right now, so instead of recycled
+            quotes, here&rsquo;s exactly how a project runs.
           </p>
         </Reveal>
 
         <div className="testimonial-rail">
-          {TESTIMONIALS.map((t, i) => (
+          {PROCESS.map((p, i) => (
             <Reveal className="testimonial" key={i} delay={i * 0.06}>
-              <div className="testimonial-mark">&ldquo;</div>
-              <div className="testimonial-body">{t.quote}</div>
-              <div className="testimonial-by">
-                <div className="testimonial-avatar">{t.avatar}</div>
-                <div style={{ flex: 1 }}>
-                  <div className="testimonial-name">{t.name}</div>
-                  <div className="testimonial-role">{t.role}</div>
-                </div>
-                <div className="testimonial-stars">★★★★★</div>
+              <div className="testimonial-mark">{p.step}</div>
+              <div className="testimonial-body">
+                <div className="testimonial-name" style={{ marginBottom: 10 }}>{p.title}</div>
+                {p.body}
               </div>
             </Reveal>
           ))}
         </div>
+
+        <Reveal className="process-cta">
+          <p>
+            Founding clients get closer collaboration and founding-client pricing —
+            first come, first served.
+          </p>
+          <a href="/quiz" className="btn btn-primary">
+            Take the fit quiz <span className="btn-arrow">→</span>
+          </a>
+        </Reveal>
       </div>
     </section>
   );
@@ -340,7 +345,7 @@ export function Home() {
       <Services />
       <Templates />
       <QuizCTA />
-      <Testimonials />
+      <Process />
       <FAQ />
       <Contact />
       <Footer />

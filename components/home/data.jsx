@@ -76,7 +76,7 @@ export const SERVICES = [
 export const TEMPLATES = [
   {
     id: 'TPL-01 / NIGHTLIFE', name: 'The Obscura', category: 'Bar & Nightlife',
-    status: 'featured', tag: 'Free', price: 0,
+    status: 'featured', tag: 'Free', price: 0, slug: 'obscura',
     meta: 'Cocktail bars · Speakeasies · One-page',
     art: 'cov-obscura', span: 'tpl-w3',
     image: '/img/templates/obscura.jpg',
@@ -98,7 +98,7 @@ export const TEMPLATES = [
   },
   {
     id: 'TPL-03 / PORTFOLIO', name: 'Materia', category: 'Portfolio',
-    status: null, tag: 'Free', price: 0,
+    status: null, tag: 'Free', price: 0, slug: 'materia',
     meta: 'Designers · Index-style · Graphite',
     art: 'cov-materia', span: 'tpl-w2',
     image: '/img/templates/materia.jpg',
@@ -120,30 +120,20 @@ export const TEMPLATES = [
   },
 ];
 
-export const TESTIMONIALS = [
+// Honest process-proof — replaces invented testimonials until real ones exist.
+// Each item is how the work actually runs, stated plainly. No fake names/quotes.
+export const PROCESS = [
   {
-    avatar: 'MR', name: 'Maya Rosenthal', role: 'Founder · Northbound',
-    quote: <>Got our landing live in <em>nine days</em>. The template was 80% of the work — the polish hour by hour with us is what made it feel ours.</>,
+    step: '01', title: 'Audit first',
+    body: <>Every build starts with the system — type scale, color, spacing, motion tokens. <em>Nothing decorative</em> until the foundation is right.</>,
   },
   {
-    avatar: 'JK', name: 'Jonas Köhler', role: 'Operator · Stack/Co',
-    quote: <>I came in asking for a redesign and left with an honest answer: <em>you don't need one yet.</em> Bought the template, shipped it, came back six months later for the full build.</>,
+    step: '02', title: 'Build in the open',
+    body: <>Editorial-grade layouts, wired and documented. You see progress as it happens, not a <em>big reveal</em> at the end.</>,
   },
   {
-    avatar: 'AP', name: 'Aniela Petrescu', role: 'Design Lead · Foundry.io',
-    quote: <>The handoff doc alone was worth the price. CMS, components, motion tokens — all named the way a <em>real</em> dev would name them.</>,
-  },
-  {
-    avatar: 'TW', name: 'Tomi Williams', role: 'Head of Marketing · Cardinal',
-    quote: <>We replaced an agency engagement with a Studio/fwd retainer and ship twice as fast, at <em>a third</em> of the cost.</>,
-  },
-  {
-    avatar: 'SD', name: 'Sofía Delgado', role: 'Founder · Hum & Co',
-    quote: <>Three different agency pitches, one quiz, and a 20-minute call. <em>Studio/fwd was the only one</em> who heard what I actually said.</>,
-  },
-  {
-    avatar: 'RH', name: 'Ravi Hadid', role: 'CEO · Eastside Labs',
-    quote: <>Beautiful work, on time, no theatre. Will be back the second we launch product two — <em>and the third</em>.</>,
+    step: '03', title: 'Ship & hand off',
+    body: <>Live on your domain in days, not months — with a walkthrough so <em>you own it</em>, not me.</>,
   },
 ];
 
@@ -188,7 +178,7 @@ export const NAV_LINKS = [
   { href: '/#work',         label: 'Work' },
   { href: '/templates',     label: 'Templates' },
   { href: '/#quiz',         label: 'Quiz' },
-  { href: '/#testimonials', label: 'Reviews' },
+  { href: '/#process',      label: 'Process' },
   { href: '/#faq',          label: 'FAQ' },
 ];
 

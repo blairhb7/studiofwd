@@ -3,15 +3,26 @@
 // =====================================================================
 // Get Template modal — Hamza-style. Click "Get template" on any card and
 // this sheet slides up with the cover, price, and the real paths to own
-// it: buy (Contra) and/or remix (Framer). Free templates show remix only.
+// it: buy (Contra) and/or remix (Framer).
+//
+// FREE templates: capture email inline (peak-intent), then reveal the
+// Framer remix link in place — one motion, no new page.
+// PAID templates: unchanged (buy on Contra / remix in Framer).
 // =====================================================================
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Cover } from '../home/sections-a';
 
 export default function GetTemplateModal({ template, onClose }) {
   const closeRef = useRef(null);
   const open = Boolean(template);
+
+  // Inline capture state (free templates only)
+  const [email, setEmail] = useState('');
+  const [company, setCompany] = useState(''); // honeypot
+  const [status, setStatus] = useState('idle'); // idle | loading | done | error
+  const [error, setError] = useState('');
+  const [remixUrl, setRemixUrl] = useState('');
 
   // Lock scroll + focus + escape-to-close while open
   useEffect(() => {
@@ -27,11 +38,41 @@ export default function GetTemplateModal({ template, onClose }) {
     };
   }, [open, onClose]);
 
+  // Reset capture state whenever a different template opens
+  useEffect(() => {
+    setEmail(''); setCompany(''); setStatus('idle'); setError(''); setRemixUrl('');
+  }, [template?.id]);
+
   if (!open) return null;
 
   const t = template;
   const isFree = t.price === 0;
   const priceLabel = isFree ? 'Free' : `$${t.price}`;
+
+  async function handleCapture() {
+    if (status === 'loading') return;
+    setStatus('loading');
+    setError('');
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, slug: t.slug ?? t.id, company }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? 'Something went wrong — try again?');
+        setStatus('error');
+        return;
+      }
+      // Prefer the link from the API; fall back to the template's own remix link.
+      setRemixUrl(data.remixUrl || t.remix || '');
+      setStatus('done');
+    } catch {
+      setError("Couldn't reach the server — try again in a moment.");
+      setStatus('error');
+    }
+  }
 
   return (
     <div
@@ -66,35 +107,78 @@ export default function GetTemplateModal({ template, onClose }) {
             <p className="gt-desc">{t.description}</p>
 
             <div className="gt-actions">
-              {t.buy && (
-                <a
-                  className="btn btn-primary gt-btn"
-                  href={t.buy}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              {/* PAID: unchanged buy/remix buttons */}
+              {!isFree && t.buy && (
+                <a className="btn btn-primary gt-btn" href={t.buy} target="_blank" rel="noopener noreferrer">
                   Buy for {priceLabel} <span className="btn-arrow">→</span>
                 </a>
               )}
-
-              {t.remix && (
+              {!isFree && t.remix && (
                 <a
                   className={`btn ${t.buy ? 'btn-ghost' : 'btn-primary'} gt-btn`}
                   href={t.remix}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {isFree ? 'Remix free in Framer' : 'Remix in Framer'} <span className="btn-arrow">↗</span>
+                  Remix in Framer <span className="btn-arrow">↗</span>
                 </a>
               )}
 
+              {/* FREE: inline email capture → reveal remix link in place */}
+              {isFree && status !== 'done' && (
+                <div className="gt-capture">
+                  <label className="gt-capture-label" htmlFor="gt-email">
+                    Enter your email and I&rsquo;ll send you the remix link.
+                  </label>
+                  <input
+                    type="text"
+                    className="gt-honeypot"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    placeholder="Company"
+                  />
+                  <div className="gt-capture-row">
+                    <input
+                      id="gt-email"
+                      className="gt-capture-input"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleCapture()}
+                      placeholder="you@yourbusiness.com"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-primary gt-btn"
+                      onClick={handleCapture}
+                      disabled={status === 'loading'}
+                    >
+                      {status === 'loading' ? 'Sending…' : 'Get the template'} <span className="btn-arrow">↗</span>
+                    </button>
+                  </div>
+                  {status === 'error' && <p className="gt-capture-error">{error}</p>}
+                  <p className="gt-capture-fine">One email. No spam. Unsubscribe anytime.</p>
+                </div>
+              )}
+
+              {/* FREE: success — link revealed in place */}
+              {isFree && status === 'done' && (
+                <div className="gt-capture gt-capture-done">
+                  <p className="gt-capture-done-title">Check your inbox — link sent.</p>
+                  {remixUrl && (
+                    <a className="btn btn-primary gt-btn" href={remixUrl} target="_blank" rel="noopener noreferrer">
+                      Remix free in Framer <span className="btn-arrow">↗</span>
+                    </a>
+                  )}
+                </div>
+              )}
+
               {t.preview && (
-                <a
-                  className="gt-preview-link"
-                  href={t.preview}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a className="gt-preview-link" href={t.preview} target="_blank" rel="noopener noreferrer">
                   Preview live demo first ↗
                 </a>
               )}
@@ -103,7 +187,6 @@ export default function GetTemplateModal({ template, onClose }) {
             <ul className="gt-includes">
               <li>Instant remix link — copies straight into your Framer account</li>
               <li>Fully responsive, CMS-wired, components documented</li>
-              <li>Loom walkthrough + 30 days email support</li>
             </ul>
           </div>
         </div>

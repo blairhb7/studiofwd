@@ -686,3 +686,16 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 820px) {
   .tpl-finder-band { grid-template-columns: 1fr; gap: 32px; }
 }
+
+/* Inline email capture inside Get Template modal (free templates) */
+.gt-capture { width: 100%; }
+.gt-capture-label { display:block; font-family: var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.12em; color: var(--muted); margin-bottom:10px; }
+.gt-honeypot { position:absolute; left:-9999px; width:0; height:0; opacity:0; }
+.gt-capture-row { display:flex; flex-direction:column; gap:10px; }
+@media (min-width:520px){ .gt-capture-row { flex-direction:row; } }
+.gt-capture-input { flex:1; border:1px solid var(--border-2); background:var(--bg-1); padding:12px 14px; color:var(--fg); font-size:15px; border-radius:var(--radius); outline:none; transition:border-color .15s; }
+.gt-capture-input::placeholder { color:var(--faint); }
+.gt-capture-input:focus { border-color:var(--fg); }
+.gt-capture-error { margin-top:10px; font-size:13px; color:#e0654f; }
+.gt-capture-fine { margin-top:10px; font-size:12px; color:var(--faint); }
+.gt-capture-done-title { font-family:var(--serif); font-style:italic; font-size:18px; color:var(--fg); margin:0 0 12px; }
