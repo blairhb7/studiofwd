@@ -1010,6 +1010,27 @@ section { padding: 120px 0; position: relative; }
   .testimonial-rail { grid-template-columns: 1fr; }
 }
 
+.process-cta {
+  margin-top: 40px;
+  padding: 28px 30px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.process-cta p {
+  margin: 0;
+  color: var(--fg-dim);
+  max-width: 480px;
+}
+@media (max-width: 560px) {
+  .process-cta { flex-direction: column; align-items: flex-start; }
+}
+
 /* =====================================================================
    FAQ
    ===================================================================== */
