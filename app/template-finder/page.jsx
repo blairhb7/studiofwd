@@ -7,9 +7,5 @@ export const metadata = {
 };
 
 export default function TemplateFinderPage() {
-  return (
-    <div style={{ minHeight: '100vh' }}>
-      <TemplateFinder />
-    </div>
-  );
+  return <TemplateFinder />;
 }
