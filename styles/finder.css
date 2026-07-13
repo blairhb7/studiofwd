@@ -29,7 +29,8 @@
 
   position: relative;
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--tf-bg);
   color: var(--tf-fg);
   font-family: var(--tf-sans);
