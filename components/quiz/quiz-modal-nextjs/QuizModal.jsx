@@ -8,8 +8,8 @@ import styles from './QuizModal.module.css';
 export default function QuizModal({
   customUrl = '/quiz',
   templateUrl = '/template-finder',
-  scrollThreshold = 0.5,
-  fallbackDelay = 18000,
+  scrollThreshold = 0.65,
+  fallbackDelay = 30000,
   repeatDelay = 360000,
   maxShows = 2,
 }) {
